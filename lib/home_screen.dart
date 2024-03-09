@@ -68,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     title: Text(todo.title),
                     subtitle:  Text(todo.description),
                     trailing: Text(
-                      DateFormat.yMMMEd().format(todo.dateTime)),
+                      DateFormat.yMMMd().format(todo.dateTime)),
                       leading: Checkbox(
                         
                         value: todo.isCompleted,
