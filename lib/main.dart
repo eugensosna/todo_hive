@@ -5,7 +5,7 @@ import 'package:todo_hive/home_screen.dart';
 
 
 @HiveType(typeId:0)
-class Todo  {
+class Todo extends HiveObject {
  @HiveField(0)
  late String title = "";
 

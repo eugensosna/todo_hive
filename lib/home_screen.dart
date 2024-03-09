@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:hive/hive.dart';
+// import 'package:flutter/rendering.dart';
+// import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 
 import 'main.dart';
     
@@ -39,12 +40,51 @@ class _HomeScreenState extends State<HomeScreen> {
               return Container(
                 margin: EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: todo.isCompleted ?Colors.white38: Colors.white
+                  color: todo.isCompleted ?Colors.white38: Colors.white,
+                  borderRadius: BorderRadius.circular(10)
                 ),
-                child: ListTile(
-                  title: Text(todo.title),
-                  subtitle:  Text(todo.description),
-                  )
+                child: Dismissible(
+                  key: Key(todo.dateTime.toIso8601String()),
+                  direction: DismissDirection.endToStart,
+                  background: Container(
+                    color: Colors.amber,
+                    alignment: Alignment.centerRight,
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Icon(
+                      Icons.delete,
+                      color: Colors.white
+                    ),
+                  ),
+                  onDismissed: (direction){
+                    setState(() {
+
+                      todo.delete();
+                      //box.delete(todo);
+                      //todoBox.delete(todo);
+                      //todo.toString();
+                    });
+                  },
+                  child: ListTile(
+                    title: Text(todo.title),
+                    subtitle:  Text(todo.description),
+                    trailing: Text(
+                      DateFormat.yMMMEd().format(todo.dateTime)),
+                      leading: Checkbox(
+                        
+                        value: todo.isCompleted,
+                        onChanged: (value){
+                        setState(() {
+                          
+                          todo.isCompleted = value!;
+                          todo.save();
+                          
+                        
+                        });
+                      },),
+                    ),
+
+                    
+                )
                 );
               });
               }
