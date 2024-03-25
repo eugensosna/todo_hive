@@ -11,17 +11,25 @@ class Todo extends HiveObject {
 
  @HiveField(1)
  late String description;
- 
+
  @HiveField(2)
+ late String meaning;
+ 
+  @HiveField(3)
+ late String translate;
+
+ @HiveField(4)
  late bool isCompleted;
 
- @HiveField(3)
+ @HiveField(5)
   late DateTime dateTime;
 
   Todo({
     required this.title,
     required this.description,
     required this.dateTime,
+    this.meaning= "",
+    this.translate ="",
     this.isCompleted = false
   });
  
@@ -35,6 +43,8 @@ class TodoAdapter extends TypeAdapter<Todo> {
   Todo read(BinaryReader reader){
     return Todo(title: reader.readString(),
       description: reader.readString(), 
+      meaning: reader.readString(),
+      translate: reader.readString(),
       isCompleted: reader.readBool(),
       dateTime: DateTime.parse(reader.readString())
     );
@@ -43,6 +53,8 @@ class TodoAdapter extends TypeAdapter<Todo> {
    void write (BinaryWriter writer, Todo obj){
     writer.writeString(obj.title);
     writer.writeString(obj.description);
+    writer.writeString(obj.meaning);
+    writer.writeString(obj.translate); 
     writer.writeBool(obj.isCompleted);
     writer.writeString(obj.dateTime.toString());
   }
@@ -51,7 +63,7 @@ class TodoAdapter extends TypeAdapter<Todo> {
 void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(TodoAdapter());
-  await Hive.openBox<Todo>("todo");
+  await Hive.openBox<Todo>("wortshatz");
   runApp(const MyApp());
 }
 
